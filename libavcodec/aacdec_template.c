@@ -2526,6 +2526,11 @@ static int decode_extension_payload(AACContext *ac, GetBitContext *gb, int cnt,
     int res = cnt;
     int type = get_bits(gb, 4);
 
+    //AIS custom change - SBR identification
+    if(ac->custom_sbr_callback)
+        ac->custom_sbr_callback(1);
+    //
+
     if (ac->avctx->debug & FF_DEBUG_STARTCODE)
         av_log(ac->avctx, AV_LOG_DEBUG, "extension type: %d len:%d\n", type, cnt);
 
@@ -3220,6 +3225,12 @@ static int aac_decode_frame_int(AVCodecContext *avctx, void *data,
                                 int *got_frame_ptr, GetBitContext *gb, AVPacket *avpkt)
 {
     AACContext *ac = avctx->priv_data;
+
+    //AIS custom change - SBR identification
+    if(ac->custom_sbr_callback)
+        ac->custom_sbr_callback(0);
+    //
+
     ChannelElement *che = NULL, *che_prev = NULL;
     enum RawDataBlockType elem_type, che_prev_type = TYPE_END;
     int err, elem_id;

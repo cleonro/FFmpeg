@@ -1117,6 +1117,12 @@ int AAC_RENAME(ff_decode_sbr_extension)(AACContext *ac, SpectralBandReplication 
 {
     unsigned int num_sbr_bits = 0, num_align_bits;
     unsigned bytes_read;
+
+    //AIS custom change - SBR identification
+    if(ac->custom_sbr_callback)
+        ac->custom_sbr_callback(2);
+    //
+
     GetBitContext gbc = *gb_host, *gb = &gbc;
     skip_bits_long(gb_host, cnt*8 - 4);
 
@@ -1139,7 +1145,13 @@ int AAC_RENAME(ff_decode_sbr_extension)(AACContext *ac, SpectralBandReplication 
 
     num_sbr_bits++;
     if (get_bits1(gb)) // bs_header_flag
+    {
+        //AIS custom change - SBR identification
+        if(ac->custom_sbr_callback)
+            ac->custom_sbr_callback(3);
+        //
         num_sbr_bits += read_sbr_header(sbr, gb);
+    }
 
     if (sbr->reset)
         sbr_reset(ac, sbr);

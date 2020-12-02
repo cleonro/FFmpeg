@@ -370,6 +370,8 @@ struct AACContext {
     void (*vector_pow43)(int *coefs, int len);
     void (*subband_scale)(int *dst, int *src, int scale, int offset, int len, void *log_context);
 
+    void (*custom_sbr_callback)(int step);
+
 };
 
 void ff_aacdec_init_mips(AACContext *c);
