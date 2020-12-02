@@ -1,0 +1,16 @@
+# https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
+#!/usr/bin/bash
+wrkdir=`pwd`
+./configure \
+  --prefix="$wrkdir/../build" \
+  --extra-cflags="-I$wrkdir/../build/include" \
+  --extra-ldflags="-L$wrkdir/../build/lib" \
+  --extra-libs="-lpthread -lm" \
+  --bindir="../install" \
+  --enable-gpl \
+  --enable-libfdk-aac \
+  --enable-libmp3lame \
+  --enable-shared \
+  --enable-pic \
+  --enable-nonfree && \
+make && make install
